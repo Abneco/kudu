@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { canBatchUninstall } from '@shared/uninstall-policy'
 import type {
   InstalledProgram,
   UninstallProgress,
@@ -7,7 +8,12 @@ import type {
 } from '../../../shared/types'
 
 type SortField = 'displayName' | 'estimatedSize' | 'installDate' | 'publisher' | 'safety'
-type FilterMode = 'all' | 'unused'
+type FilterMode = 'all' | 'no-recent-launch'
+
+function filterModeForPrograms(mode: FilterMode, programs: InstalledProgram[]): FilterMode {
+  // The launch-history tabs disappear when no positive evidence remains.
+  return programs.some((p) => Number.isFinite(p.lastUsed) && p.lastUsed > 0) ? mode : 'all'
+}
 
 interface UninstallerState {
   programs: InstalledProgram[]
@@ -50,9 +56,6 @@ interface UninstallerState {
   reset: () => void
 }
 
-/** Programs not seen in Prefetch for 90+ days are considered unused */
-export const UNUSED_THRESHOLD_DAYS = 90
-
 export const useUninstallerStore = create<UninstallerState>((set) => ({
   programs: [],
   loading: false,
@@ -70,7 +73,12 @@ export const useUninstallerStore = create<UninstallerState>((set) => ({
   safetyLoading: false,
   expandedItemId: null,
 
-  setPrograms: (programs) => set({ programs, selectedIds: new Set<string>() }),
+  setPrograms: (programs) =>
+    set((state) => ({
+      programs,
+      selectedIds: new Set<string>(),
+      filterMode: filterModeForPrograms(state.filterMode, programs)
+    })),
   setLoading: (loading) => set({ loading }),
   setUninstalling: (uninstalling) => set({ uninstalling }),
   setProgress: (progress) => set({ progress }),
@@ -85,16 +93,26 @@ export const useUninstallerStore = create<UninstallerState>((set) => ({
     set((state) => {
       const selectedIds = new Set(state.selectedIds)
       selectedIds.delete(id)
-      return { programs: state.programs.filter((p) => p.id !== id), selectedIds }
+      const programs = state.programs.filter((p) => p.id !== id)
+      return {
+        programs,
+        selectedIds,
+        filterMode: filterModeForPrograms(state.filterMode, programs)
+      }
     }),
   toggleSelected: (id) =>
     set((state) => {
       const selectedIds = new Set(state.selectedIds)
       if (selectedIds.has(id)) selectedIds.delete(id)
-      else selectedIds.add(id)
+      else if (state.programs.some((p) => p.id === id && canBatchUninstall(p))) selectedIds.add(id)
       return { selectedIds }
     }),
-  selectAll: (ids) => set({ selectedIds: new Set(ids) }),
+  selectAll: (ids) =>
+    set((state) => ({
+      selectedIds: new Set(
+        state.programs.filter((p) => ids.includes(p.id) && canBatchUninstall(p)).map((p) => p.id)
+      )
+    })),
   clearSelected: () => set({ selectedIds: new Set<string>() }),
   setSafetyRatings: (ratings) =>
     set({
