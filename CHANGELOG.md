@@ -1,3 +1,35 @@
+# [3.5.0](https://github.com/adventdevinc/kudu/compare/v3.4.0...v3.5.0) (2026-09-29)
+
+
+### Bug Fixes
+
+* **cleaner:** honour global exclusions in duplicate, large-file, empty-folder and shortcut tools ([#492](https://github.com/adventdevinc/kudu/issues/492)) ([fe7594f](https://github.com/adventdevinc/kudu/commit/fe7594fde4012ace53572e9f61b27f98e29189fd))
+* **cli:** mask the cloud API key in all config get output ([#485](https://github.com/adventdevinc/kudu/issues/485)) ([73b0767](https://github.com/adventdevinc/kudu/commit/73b0767953681b1316cd87b097dcaf67a4648b9f))
+* **debloater:** remove packages the scan matched by suffix ([#483](https://github.com/adventdevinc/kudu/issues/483)) ([2aaa8a4](https://github.com/adventdevinc/kudu/commit/2aaa8a4eb3ed3ab00e30fbbbeb5773d23fc34abd))
+* **duplicates:** always keep one copy and re-verify before deleting ([#493](https://github.com/adventdevinc/kudu/issues/493)) ([64ea255](https://github.com/adventdevinc/kudu/commit/64ea2555ac628b2aae0ec6d156ed162078e7e6f7))
+* **recovery:** remove a backup's seal only when its file was actually pruned ([#496](https://github.com/adventdevinc/kudu/issues/496)) ([b5f95f1](https://github.com/adventdevinc/kudu/commit/b5f95f1879cb6f6d438a96d0f91f662e7cbfaf8a))
+* **rules:** add Epic cache paths and retain recent Electron downloads ([#478](https://github.com/adventdevinc/kudu/issues/478)) ([9ebee70](https://github.com/adventdevinc/kudu/commit/9ebee708c66d0472c8cc4b52ddc70734605689ec))
+* **rules:** stop overlapping cleaner targets on macOS and Linux ([#486](https://github.com/adventdevinc/kudu/issues/486)) ([0457d98](https://github.com/adventdevinc/kudu/commit/0457d9879c9f36d3cf08ebc207679e37245c4fa4))
+* **schedules:** never auto-apply cache resets or native maintenance ([#481](https://github.com/adventdevinc/kudu/issues/481)) ([4f1aecf](https://github.com/adventdevinc/kudu/commit/4f1aecf657e5c064c4e7389dd520b48e69c8789c))
+* **shortcuts:** detect broken drive-letter shortcuts on Windows ([#482](https://github.com/adventdevinc/kudu/issues/482)) ([18dd191](https://github.com/adventdevinc/kudu/commit/18dd191d25d6ab38b2fbcdd1d86e8c027bd454b9))
+* **shredder:** don't delete or count a file when shredding is cancelled mid-overwrite ([#480](https://github.com/adventdevinc/kudu/issues/480)) ([9ec62e8](https://github.com/adventdevinc/kudu/commit/9ec62e866db871327c69949d67ceeba0afb500c0))
+* **trash:** remove orphaned Linux trash metadata after emptying ([#487](https://github.com/adventdevinc/kudu/issues/487)) ([3bb461c](https://github.com/adventdevinc/kudu/commit/3bb461cd081b15fb628ab468e2c8baa2e6bc4f99))
+* **uninstaller:** honour exclusions when removing leftovers ([#484](https://github.com/adventdevinc/kudu/issues/484)) ([7e052ed](https://github.com/adventdevinc/kudu/commit/7e052edb5cc24eb4b53d3e889d31e2b69afb4b51))
+* **uninstaller:** protect shared components and clarify launch history ([#497](https://github.com/adventdevinc/kudu/issues/497)) ([a3ccf1d](https://github.com/adventdevinc/kudu/commit/a3ccf1dfddb73291b39c26a069da70ebb7999543))
+* **updater:** accept winget ids that contain '+' ([#498](https://github.com/adventdevinc/kudu/issues/498)) ([3ed8435](https://github.com/adventdevinc/kudu/commit/3ed8435b1f80c99942cf6f4cdb0c95daf27c73ad))
+* **updater:** judge winget upgrades by exit code, not localised text ([#477](https://github.com/adventdevinc/kudu/issues/477)) ([0d7aea0](https://github.com/adventdevinc/kudu/commit/0d7aea0d5982cdfb6b45402225f7a2d20e1f5cea))
+
+
+### Features
+
+* **cleaner:** add Privacy Traces category with shell history cleaning ([#489](https://github.com/adventdevinc/kudu/issues/489)) ([ea4bfe9](https://github.com/adventdevinc/kudu/commit/ea4bfe99c89058fdfbf23fbf6479e2e48abebeb5))
+* **privacy:** clean macOS and Linux activity traces ([#491](https://github.com/adventdevinc/kudu/issues/491)) ([45aa864](https://github.com/adventdevinc/kudu/commit/45aa864712e3a40c6bd94d3dbe68cd58775a76bf))
+* **privacy:** clean Windows activity traces ([#490](https://github.com/adventdevinc/kudu/issues/490)) ([1d73ed9](https://github.com/adventdevinc/kudu/commit/1d73ed942ea15632bcd36ea06ac57c49c058e0a6))
+* **privacy:** make every macOS Privacy Shield setting reversible ([#495](https://github.com/adventdevinc/kudu/issues/495)) ([60dbcde](https://github.com/adventdevinc/kudu/commit/60dbcded8906e95db0c28af21d54b90a25fb9ce0))
+* **recovery:** restore targeted registry backups from the Recovery Centre ([#494](https://github.com/adventdevinc/kudu/issues/494)) ([4e00022](https://github.com/adventdevinc/kudu/commit/4e0002259b58e8ee41925611831e8f4085295ddd))
+* **rules:** clean old GPU driver installers, pipenv and sccache caches ([#488](https://github.com/adventdevinc/kudu/issues/488)) ([ebb2c8f](https://github.com/adventdevinc/kudu/commit/ebb2c8fb7b1f84b789909b19887fde7dd5a12b62))
+* **rules:** fill cache coverage gaps across platforms ([#479](https://github.com/adventdevinc/kudu/issues/479)) ([2cf7563](https://github.com/adventdevinc/kudu/commit/2cf75636f5d10c91f91da13fb5a189ddb623e73d))
+* **updater:** suggest the command that works when winget cannot upgrade ([#499](https://github.com/adventdevinc/kudu/issues/499)) ([5fc77df](https://github.com/adventdevinc/kudu/commit/5fc77dfce87e52ba0baa09573ba8087245b2fef4))
 # [3.4.0](https://github.com/adventdevinc/kudu/compare/v3.3.0...v3.4.0) (2026-09-22)
 
 
