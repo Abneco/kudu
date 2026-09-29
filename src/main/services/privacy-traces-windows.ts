@@ -296,8 +296,14 @@ async function pruneBackups(dir: string, slug: string, current: string): Promise
       .reverse()
     const pruned: string[] = []
     for (const f of files.slice(BACKUPS_KEPT_PER_LIST - 1)) {
-      await unlink(join(dir, f)).catch(() => {})
-      pruned.push(f)
+      // Only a file that is really gone loses its seal; a locked one stays restorable.
+      try {
+        await unlink(join(dir, f))
+        pruned.push(f)
+      } catch (err) {
+        // A concurrent deletion also revokes the seal; other failures retain it.
+        if ((err as NodeJS.ErrnoException).code === 'ENOENT') pruned.push(f)
+      }
     }
     // A pruned file's seal must go too, or a kept copy of it could be replayed.
     await removeSeals(dir, pruned)
