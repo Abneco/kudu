@@ -260,6 +260,18 @@ describe('runUpdates (winget)', () => {
   const elevated = (calls: Call[]): boolean => calls.some((c) => c.file === 'powershell.exe')
   const update = (id = 'Recol.DLSSUpdater') => runUpdates([{ id, source: 'winget' }], () => {})
 
+  it.each(['winget', 'choco', 'scoop', 'npm', 'msstore'])(
+    'does not suggest a shell command for a rejected %s ID',
+    async (source) => {
+      const result = await runUpdates([{ id: 'bad; Write-Output injected', source }], () => {})
+
+      expect(result.failed).toBe(1)
+      expect(result.errors[0].reason).toContain('Invalid')
+      expect(result.errors[0].suggestedCommands ?? []).toEqual([])
+      expect(mockExecFile).not.toHaveBeenCalled()
+    }
+  )
+
   it('counts a clean exit as success whatever language winget speaks', async () => {
     const calls = scriptUpgrade([{ stdout: ITALIAN_SUCCESS }])
 
@@ -318,6 +330,45 @@ describe('runUpdates (winget)', () => {
     expect(elevated(calls)).toBe(true)
     expect(upgradeCalls(calls).map((c) => c.args.includes('--force'))).toEqual([false, true])
     expect(result.errors[0].reason).toBe('Programma di installazione non riuscito: 1603 (0x643)')
+  })
+
+  it('suggests installing over the upgrade when winget found no matching package', async () => {
+    scriptUpgrade([{ stdout: '', error: { code: 0x8a150014 } }])
+
+    const result = await update()
+
+    expect(result.errors[0].suggestedCommands).toEqual([
+      'winget install --id "Recol.DLSSUpdater" --exact --force'
+    ])
+  })
+
+  it('suggests uninstalling then reinstalling when the install technology changed', async () => {
+    const calls = scriptUpgrade([
+      { stdout: 'install technology is different', error: { code: 0x8a15008e } }
+    ])
+
+    const result = await update()
+
+    expect(result.errors[0].suggestedCommands).toEqual([
+      'winget uninstall --id "Recol.DLSSUpdater" --exact',
+      'winget install --id "Recol.DLSSUpdater" --exact'
+    ])
+    // Uninstall/reinstall is the remedy here — a forced retry hits the same wall
+    expect(upgradeCalls(calls)).toHaveLength(1)
+  })
+
+  it('falls back to the same command run by hand for unmapped failures', async () => {
+    const calls = scriptUpgrade(
+      [{ stdout: 'Programma di installazione non riuscito: 1603\r\n', error: { code: 1603 } }],
+      { stdout: UPGRADE_TABLE.replace('GitHub.cli', 'Recol.DLSSUpdater') }
+    )
+
+    const result = await update()
+
+    expect(elevated(calls)).toBe(true)
+    expect(result.errors[0].suggestedCommands).toEqual([
+      'winget upgrade --id "Recol.DLSSUpdater" --exact'
+    ])
   })
 
   it('treats an empty rescan after an elevated upgrade as success', async () => {
