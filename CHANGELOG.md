@@ -1,3 +1,10 @@
+## [3.6.1](https://github.com/adventdevinc/kudu/compare/v3.5.0...v3.6.1) (2026-10-06)
+
+
+### Bug Fixes
+
+* **icons:** add missing Windows DPI sizes to the app icon ([#513](https://github.com/adventdevinc/kudu/issues/513)) ([920f59c](https://github.com/adventdevinc/kudu/commit/920f59cb2963f716207856723f265c780c4e08b7))
+* **malware:** stop flagging validly signed binaries with the PE heuristic ([#507](https://github.com/adventdevinc/kudu/issues/507)) ([e9784a1](https://github.com/adventdevinc/kudu/commit/e9784a163f4d5ac1c60b6697ee577bda3f2ca033))
 # [3.5.0](https://github.com/adventdevinc/kudu/compare/v3.4.0...v3.5.0) (2026-09-29)
 
 
