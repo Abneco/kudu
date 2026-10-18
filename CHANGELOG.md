@@ -1,3 +1,15 @@
+# [3.9.0](https://github.com/adventdevinc/kudu/compare/v3.8.0...v3.9.0) (2026-10-18)
+
+
+### Bug Fixes
+
+* **sidebar:** keep protection totals off child badges ([#534](https://github.com/adventdevinc/kudu/issues/534)) ([afb02cc](https://github.com/adventdevinc/kudu/commit/afb02ccc7edbf62160459491edf2044f90afe681))
+* **updater:** clarify package manager update availability ([#535](https://github.com/adventdevinc/kudu/issues/535)) ([b86ef77](https://github.com/adventdevinc/kudu/commit/b86ef775e631aa8fe197d21d55a6ef1a4f21a21e))
+
+
+### Features
+
+* **cleaner:** add custom cleaning folders ([#536](https://github.com/adventdevinc/kudu/issues/536)) ([79108dc](https://github.com/adventdevinc/kudu/commit/79108dc57011ad54731b213853627316c18f71a6))
 # [3.8.0](https://github.com/adventdevinc/kudu/compare/v3.7.0...v3.8.0) (2026-10-10)
 
 
