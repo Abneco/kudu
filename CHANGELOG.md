@@ -1,3 +1,10 @@
+# [3.10.0](https://github.com/adventdevinc/kudu/compare/v3.9.0...v3.10.0) (2026-10-21)
+
+
+### Bug Fixes
+
+* **dashboard:** prevent more space goal from crashing ([#547](https://github.com/adventdevinc/kudu/issues/547)) ([f98adff](https://github.com/adventdevinc/kudu/commit/f98adffe1ed773faa240042caae68583499fd399))
+* **security:** resolve code scanning and dependency alerts ([#542](https://github.com/adventdevinc/kudu/issues/542)) ([ccd6297](https://github.com/adventdevinc/kudu/commit/ccd6297b3cc9eadc7166a671d01835319de03523))
 # [3.9.0](https://github.com/adventdevinc/kudu/compare/v3.8.0...v3.9.0) (2026-10-18)
 
 
